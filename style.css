@@ -160,7 +160,7 @@ nav {
 }
 
 .hero h1 {
-    font-size: 56px;
+    font-size: 46px;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -1px;
@@ -1301,3 +1301,18 @@ footer {
         pointer-events: auto !important;
         transform: translateY(0) !important;
     }
+/* ==========================================================================
+   PERBAIKAN JARAK HERO CONTENT DI MOBILE (HP)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Ganti '.hero-section' dengan nama class section pertamamu (misal: #home atau .hero) */
+    #home, .hero-section {
+        padding-top: 140px !important; /* Menolak dorongan ke atas dan memberi ruang aman di bawah headerbar */
+    }
+}
+@media (max-width: 768px) {
+    /* Menargetkan status-badge hanya saat di layar HP */
+    .status-badge {
+        margin-top: 10px !important; /* Mengurangi jarak atas dari 60px menjadi 20px */
+    }
+}
