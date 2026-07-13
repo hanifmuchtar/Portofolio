@@ -19,13 +19,18 @@
     <!-- NAVIGATION -->
     <nav>
         <a href="#home" class="logo">hanifmuchtar<span>.dev</span></a>
-        <ul class="nav-links">
+        <ul class="nav-links" id="navLinks">
             <li><a href="#home">Home</a></li>
             <li><a href="#about" class="active">About</a></li>
             <li><a href="#certificates">Certificates</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
     </nav>
 
     <!-- HERO SECTION -->
@@ -64,7 +69,7 @@
 </div>
 <div class="hero-image-area">
             <div class="hero-img-container fade-up delay">
-                <img src="gw2.jpeg" alt="Hanif Muchtar" class="profile-placeholder" style="object-fit: cover;">
+                <img src="gw2.jpeg" alt="Muhammad Hanif Muchtar" class="profile-placeholder" style="object-fit: cover;">
             </div>
         </div>
         </div>
@@ -323,6 +328,29 @@ Magelang, Central Java, Indonesia</p>
         <p>&copy; 2026 Muhammad Hanif Muchtar. Built with passion. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Ganti script paling bawah di index.html dengan ini -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const mobileBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('navLinks');
+
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            // 🎯 KUNCI UTAMA: Menambah/menghapus kelas active di tombol DAN menu
+            mobileBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Menutup menu & mengembalikan tombol jadi 3 garis saat link diklik
+        document.querySelectorAll('.nav-links a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>

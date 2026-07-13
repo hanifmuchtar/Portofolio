@@ -103,3 +103,17 @@ prevBtn.addEventListener('click', () => {
 
 // 6. Jalankan slider otomatis pertama kali saat halaman web selesai dimuat
 startAutoplay();
+
+// 1. Aksi ketika tombol 3 garis diklik
+hamburgerBtn.addEventListener('click', () => {
+    hamburgerBtn.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+// 2. BONUS PINTAR: Menu otomatis menutup kembali saat pengguna mengeklik salah satu menu tautan
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
+});
