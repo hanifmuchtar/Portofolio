@@ -498,6 +498,54 @@ section {
     border-color: var(--accent-blue); /* Garis tepi berubah ke biru tema saat di-hover */
 }
 
+/* 🎯 TEMPELKAN KODE BARU DI SINI (Paling Bawah) */
+.about-section {
+    padding: 80px 7%;
+    background-color: #ffffff;
+    text-align: center; 
+}
+
+.about-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    gap: 30px;              
+    max-width: 800px;       
+    margin: 0 auto;
+}
+
+.about-container h2 {
+    font-size: 2.5rem;
+    color: #0F172A;
+    margin: 0;
+}
+
+.about-img {
+    display: flex;
+    justify-content: center;
+}
+
+.about-img img {
+    width: 280px;           
+    height: 280px;          
+    object-fit: cover;      
+    border-radius: 50%;     
+    border: 4px solid #4a82d6; 
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.about-text {
+    width: 100%;
+}
+
+.about-text p {
+    font-size: 1rem;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: center; 
+}
+
 /* ==========================================================================
    CERTIFICATES SUB-SECTION VERTICAL GRID LAYOUT
    ========================================================================== */
