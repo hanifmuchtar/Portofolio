@@ -128,55 +128,88 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 // ==========================================================================
-// LOGIKA CAROUSEL SWIPE AUTOMATIS KARTU SERTIFIKAT
+// LOGIKA CAROUSEL SWIPE OTOMATIS KARTU SERTIFIKAT (VERSI TANGGUH)
 // ==========================================================================
-const certTrack = document.getElementById('certSliderTrack');
-const certPrev = document.getElementById('certPrevBtn');
-const certNext = document.getElementById('certNextBtn');
+document.addEventListener("DOMContentLoaded", function() {
+    const certTrack = document.getElementById('certSliderTrack');
+    const certPrev = document.getElementById('certPrevBtn');
+    const certNext = document.getElementById('certNextBtn');
 
-if (certTrack && certPrev && certNext) {
-    // Perhitungan jarak geser yang lebih aman
-    const getScrollAmount = () => {
-        const firstCard = certTrack.querySelector('.cert-card-box');
-        // Jika box terbaca, gunakan lebarnya + gap (24px). Jika tidak, gunakan standarnya (350px)
-        return firstCard && firstCard.clientWidth > 0 ? firstCard.clientWidth + 24 : 350; 
-    };
+    if (certTrack && certPrev && certNext) {
+        
+        // 🎯 FUNGSI BARU: Menghitung jarak geser dengan angka cadangan yang pasti untuk desktop
+        function getCertScrollAmount() {
+            const firstCard = certTrack.querySelector('.cert-card-box');
+            if (firstCard && firstCard.clientWidth > 0) {
+                return firstCard.clientWidth + 24; // Lebar kartu + gap 24px
+            }
+            // Jika layar desktop standar 3 kolom, bagi lebar track menjadi 3 bagian
+            return (certTrack.clientWidth / 3); 
+        }
 
-    let certAutoplayTimer = null;
-
-    // 1. Fungsi Bergulir Otomatis secara Swipe
-    function startCertAutoplay() {
-        certAutoplayTimer = setInterval(() => {
-            const amount = getScrollAmount();
-            const isAtEnd = certTrack.scrollLeft + certTrack.clientWidth >= certTrack.scrollWidth - 10;
+        // 1. TOMBOL PANAH KANAN (DIPAKSA BERGESER)
+        certNext.addEventListener('click', function(e) {
+            e.preventDefault();
+            const scrollAmount = getCertScrollAmount();
+            
+            // Deteksi manual ujung kanan
+            const isAtEnd = certTrack.scrollLeft + certTrack.clientWidth >= certTrack.scrollWidth - 20;
             
             if (isAtEnd) {
-                // Balik perlahan ke box pertama jika sudah mentok ujung kanan
-                certTrack.scrollTo({ left: 0, behavior: 'smooth' });
+                certTrack.scrollTo({ left: 0, behavior: 'smooth' }); // Loop ke awal
             } else {
-                // Geser ke box berikutnya di sebelah kanan
-                certTrack.scrollBy({ left: amount, behavior: 'smooth' });
+                certTrack.scrollTo({
+                    left: certTrack.scrollLeft + scrollAmount,
+                    behavior: 'smooth'
+                });
             }
-        }, 4000); // Bergulir otomatis setiap 4 detik
+        });
+
+        // 2. TOMBOL PANAH KIRI (DIPAKSA MUNDUR)
+        certPrev.addEventListener('click', function(e) {
+            e.preventDefault();
+            const scrollAmount = getCertScrollAmount();
+            
+            if (certTrack.scrollLeft <= 10) {
+                certTrack.scrollTo({ left: certTrack.scrollWidth, behavior: 'smooth' }); // Loop ke ujung akhir
+            } else {
+                certTrack.scrollTo({
+                    left: certTrack.scrollLeft - scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        // Fungsi Menghentikan Sementara Autoplay
+        function stopCertAutoplay() {
+            if (certAutoplayTimer) {
+                clearInterval(certAutoplayTimer);
+            }
+        }
+
+        // 2. KONTROL MANUAL TOMBOL PANAH
+        certNext.addEventListener('click', function() {
+            stopCertAutoplay();
+            certTrack.scrollBy({ left: getCertScrollAmount(), behavior: 'smooth' });
+            startCertAutoplay(); // Jalankan ulang timer setelah diklik manual
+        });
+
+        certPrev.addEventListener('click', function() {
+            stopCertAutoplay();
+            certTrack.scrollBy({ left: -getCertScrollAmount(), behavior: 'smooth' });
+            startCertAutoplay();
+        });
+
+        // 3. FITUR HOVER MOUSE: Stop jalan saat kursor menyentuh kartu
+        certTrack.addEventListener('mouseenter', stopCertAutoplay);
+        certTrack.addEventListener('mouseleave', startCertAutoplay);
+
+        // 4. DETEKSI SWIPE JARI MANUAL (Khusus Layar HP / Touchpad)
+        // Jika user melakukan swipe manual, matikan sementara autoplay agar tidak pusing
+        certTrack.addEventListener('touchstart', stopCertAutoplay, { passive: true });
+        certTrack.addEventListener('touchend', startCertAutoplay, { passive: true });
+
+        // Nyalakan carousel untuk pertama kalinya
+        startCertAutoplay();
     }
-
-    function stopCertAutoplay() {
-        if (certAutoplayTimer) clearInterval(certAutoplayTimer);
-    }
-
-    // 2. Tombol Manual Klik Panah
-    certNext.addEventListener('click', () => {
-        certTrack.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    });
-
-    certPrev.addEventListener('click', () => {
-        certTrack.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-    });
-
-    // 3. Hover Interaction: Berhenti otomatis saat kursor nempel di box
-    certTrack.addEventListener('mouseenter', stopCertAutoplay);
-    certTrack.addEventListener('mouseleave', startCertAutoplay);
-
-    // Jalankan pertama kali saat halaman siap
-    startCertAutoplay();
-}
+});

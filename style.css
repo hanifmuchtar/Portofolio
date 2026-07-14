@@ -570,34 +570,28 @@ section {
     padding: 20px 0;
 }
 
-/* Track horizontal tempat berjejeran box (Menggunakan smooth scroll bawaan browser) */
 .cert-slider-track {
-    display: flex;
+    display: flex !important;
     gap: 24px;
-    overflow-x: auto; /* Mengaktifkan swipe natural dengan mouse/jari */
-    overflow-y: hidden; /* Sembunyikan scroll vertikal */
-    scroll-behavior: smooth; /* Efek bergeser halus saat tombol panah diklik */
-    scroll-snap-type: x mandatory; /* Mengunci posisi geseran pas di tengah box */
-    scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+    overflow-x: auto !important; 
+    overflow-y: hidden !important;
+    scroll-behavior: smooth; 
+    
+    /* 🎯 UBAH INI: Kita longgarkan snap-nya agar tombol JavaScript bisa menggeser dengan bebas */
+    scroll-snap-type: none !important; 
+    
+    scrollbar-width: none; 
 }
-
 .cert-slider-track::-webkit-scrollbar {
-    display: none; /* Sembunyikan scrollbar di Chrome/Safari */
+    display: none !important; 
 }
 
-/* 🎯 MODEL BOX KARTU SERTIFIKAT (KOTAK KE ATAS) */
+/* Pastikan kartu sertifikatnya juga dilepas snap-nya di desktop */
 .cert-card-box {
-    flex: 0 0 calc(33.333% - 16px); /* Di desktop tampil 3 box dalam 1 layar */
-    scroll-snap-align: start;
+    flex: 0 0 calc(33.333% - 16px);
+    scroll-snap-align: none !important; /* 🎯 UBAH INI */
     background-color: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column; /* Gambar di atas, konten teks di bawah */
-    overflow: hidden;
-    text-decoration: none;
-    box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* ... sisa kode .cert-card-box kamu yang lain ... */
 }
 
 .cert-card-box:hover {
