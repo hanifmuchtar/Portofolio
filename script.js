@@ -135,10 +135,11 @@ const certPrev = document.getElementById('certPrevBtn');
 const certNext = document.getElementById('certNextBtn');
 
 if (certTrack && certPrev && certNext) {
-    // Jarak geser dihitung berdasarkan lebar 1 box penuh
+    // Perhitungan jarak geser yang lebih aman
     const getScrollAmount = () => {
         const firstCard = certTrack.querySelector('.cert-card-box');
-        return firstCard ? firstCard.clientWidth + 24 : 300; // 24 adalah ukuran gap CSS
+        // Jika box terbaca, gunakan lebarnya + gap (24px). Jika tidak, gunakan standarnya (350px)
+        return firstCard && firstCard.clientWidth > 0 ? firstCard.clientWidth + 24 : 350; 
     };
 
     let certAutoplayTimer = null;

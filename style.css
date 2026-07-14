@@ -575,6 +575,7 @@ section {
     display: flex;
     gap: 24px;
     overflow-x: auto; /* Mengaktifkan swipe natural dengan mouse/jari */
+    overflow-y: hidden; /* Sembunyikan scroll vertikal */
     scroll-behavior: smooth; /* Efek bergeser halus saat tombol panah diklik */
     scroll-snap-type: x mandatory; /* Mengunci posisi geseran pas di tengah box */
     scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
