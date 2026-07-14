@@ -12,38 +12,54 @@ projectCards.forEach(card => {
 });
 // Ambil semua elemen tautan menu
 const navLinks = document.querySelectorAll('.nav-links li a');
+const sections = document.querySelectorAll('section, header');
 
-// 1. LOGIKA SAAT MENU DIKLIK (GARIS LANGSUNG BERPINDAH & MENETAP)
+// Pengaman agar saat diklik, efek scroll tidak bentrok dengan deteksi otomatis
+let isClickScrolling = false;
+
+// 1. KONTROL AKTIF VIA KLIK MENU
 navLinks.forEach(link => {
-    link.addEventListener('click', function() {
-        // Hapus kelas 'active' (garis menetap) dari semua menu
+    link.addEventListener('click', function(e) {
+        isClickScrolling = true;
+
+        // Reset & pindahkan kelas active secara instan saat diklik
         navLinks.forEach(item => item.classList.remove('active'));
-        
-        // Tambahkan kelas 'active' hanya pada menu yang baru saja diklik
         this.classList.add('active');
+
+        // Buka kembali deteksi scroll setelah animasi perpindahan halaman selesai
+        setTimeout(() => {
+            isClickScrolling = false;
+        }, 800);
     });
 });
 
-// 2. LOGIKA SAAT HALAMAN DI-SCROLL (GARIS OTOMATIS MENGIKUTI POSISI SCREEN)
-const sections = document.querySelectorAll('section, header');
-
+// 2. KONTROL AKTIF VIA SCROLL DENGAN FORMULA GETBOUNDINGCLIENTRECT
 window.addEventListener('scroll', () => {
-    let currentSection = '';
+    if (isClickScrolling) return;
+
+    let currentSectionId = '';
 
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        if (pageYOffset >= (sectionTop - 150)) {
-            currentSection = section.getAttribute('id');
+        // Mengukur posisi seksi relatif terhadap layar komputer saat ini
+        const rect = section.getBoundingClientRect();
+        
+        // SELEKSI PINTAR: Jika bagian atas seksi sudah masuk area layar atas (toleransi 200px)
+        if (rect.top <= 200 && rect.bottom >= 200) {
+            currentSectionId = section.getAttribute('id');
         }
     });
 
-    navLinks.forEach(link => {
-        if (link.getAttribute('href').includes(currentSection)) {
-            // Bersihkan menu lain, nyalakan garis menetap di seksi yang sedang dibaca
-            navLinks.forEach(item => item.classList.remove('active'));
-            link.classList.add('active');
-        }
-    });
+    if (currentSectionId) {
+        navLinks.forEach(link => {
+            // Hapus semua kelas active terlebih dahulu
+            link.classList.remove('active');
+            
+            // Nyalakan garis bawah hanya pada menu yang id-nya cocok
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.add('active');
+            }
+        });
+    }
 });
 
 // Pesan eksklusif bagi penguji/developer di konsol inspect element
@@ -104,12 +120,6 @@ prevBtn.addEventListener('click', () => {
 // 6. Jalankan slider otomatis pertama kali saat halaman web selesai dimuat
 startAutoplay();
 
-// 1. Aksi ketika tombol 3 garis diklik
-hamburgerBtn.addEventListener('click', () => {
-    hamburgerBtn.classList.toggle('active');
-    navLinks.classList.toggle('active');
-});
-
 // 2. BONUS PINTAR: Menu otomatis menutup kembali saat pengguna mengeklik salah satu menu tautan
 document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
@@ -117,3 +127,55 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         navLinks.classList.remove('active');
     });
 });
+// ==========================================================================
+// LOGIKA CAROUSEL SWIPE AUTOMATIS KARTU SERTIFIKAT
+// ==========================================================================
+const certTrack = document.getElementById('certSliderTrack');
+const certPrev = document.getElementById('certPrevBtn');
+const certNext = document.getElementById('certNextBtn');
+
+if (certTrack && certPrev && certNext) {
+    // Jarak geser dihitung berdasarkan lebar 1 box penuh
+    const getScrollAmount = () => {
+        const firstCard = certTrack.querySelector('.cert-card-box');
+        return firstCard ? firstCard.clientWidth + 24 : 300; // 24 adalah ukuran gap CSS
+    };
+
+    let certAutoplayTimer = null;
+
+    // 1. Fungsi Bergulir Otomatis secara Swipe
+    function startCertAutoplay() {
+        certAutoplayTimer = setInterval(() => {
+            const amount = getScrollAmount();
+            const isAtEnd = certTrack.scrollLeft + certTrack.clientWidth >= certTrack.scrollWidth - 10;
+            
+            if (isAtEnd) {
+                // Balik perlahan ke box pertama jika sudah mentok ujung kanan
+                certTrack.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                // Geser ke box berikutnya di sebelah kanan
+                certTrack.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+        }, 4000); // Bergulir otomatis setiap 4 detik
+    }
+
+    function stopCertAutoplay() {
+        if (certAutoplayTimer) clearInterval(certAutoplayTimer);
+    }
+
+    // 2. Tombol Manual Klik Panah
+    certNext.addEventListener('click', () => {
+        certTrack.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    certPrev.addEventListener('click', () => {
+        certTrack.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    // 3. Hover Interaction: Berhenti otomatis saat kursor nempel di box
+    certTrack.addEventListener('mouseenter', stopCertAutoplay);
+    certTrack.addEventListener('mouseleave', startCertAutoplay);
+
+    // Jalankan pertama kali saat halaman siap
+    startCertAutoplay();
+}
