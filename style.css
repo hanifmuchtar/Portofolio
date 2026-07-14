@@ -1628,7 +1628,8 @@ nav, .headerbar {
         font-size: 14px !important;
     }
 }
-AKSI RESPONSIF MOBILE HP (Taruh di bagian bawah @media kamu)
+/* ==========================================================================
+   AKSI RESPONSIF MOBILE HP
    ========================================================================== */
 @media (max-width: 992px) {
     /* Layar Tablet: Menjadi 2 Kolom ke samping */
@@ -1639,11 +1640,11 @@ AKSI RESPONSIF MOBILE HP (Taruh di bagian bawah @media kamu)
 }
 
 @media (max-width: 600px) {
-    /* Layar HP Mobile: Menjadi 1 Kolom memanjang ke bawah (Lebar penuh seperti Certificates) */
+    /* Layar HP Mobile: Menjadi 1 Kolom memanjang ke bawah */
     .projects-grid {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
-        padding: 0 5%; /* Memberi jarak aman di kanan-kiri layar HP */
+        padding: 0 5% !important; /* Memberi jarak aman di kanan-kiri layar HP */
     }
     .project-content {
         padding: 20px 22px 22px 22px !important;
