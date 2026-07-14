@@ -1644,9 +1644,15 @@ nav, .headerbar {
     .projects-grid {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
-        padding: 0 5% !important; /* Memberi jarak aman di kanan-kiri layar HP */
+        padding: 0 !important; /* Memberi jarak aman di kanan-kiri layar HP */
     }
     .project-content {
         padding: 20px 22px 22px 22px !important;
     }
 }
+    
+    /* 🎯 TAMBAHKAN KODE INI UNTUK MEMBERI JARAK FOTO PROFIL DENGAN HEADER */
+    .hero { 
+        padding-top: 120px;
+        padding-bottom: 20px !important; /* Menggeser area profil turun ke bawah agar tidak terpentok header */
+    }
