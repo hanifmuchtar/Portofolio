@@ -127,89 +127,150 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         navLinks.classList.remove('active');
     });
 });
-// ==========================================================================
-// LOGIKA CAROUSEL SWIPE OTOMATIS KARTU SERTIFIKAT (VERSI TANGGUH)
-// ==========================================================================
 document.addEventListener("DOMContentLoaded", function() {
-    const certTrack = document.getElementById('certSliderTrack');
-    const certPrev = document.getElementById('certPrevBtn');
-    const certNext = document.getElementById('certNextBtn');
 
-    if (certTrack && certPrev && certNext) {
+});
+
+
+;
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // ==========================================================================
+    // INKUBATOR FUNGSI CAROUSEL GENERIK (Bisa dipakai berulang kali)
+    // ==========================================================================
+    function initTransformCarousel(trackId, prevBtnId, nextBtnId, itemsPerPageMobile, itemsPerPageDesktop, gapSize) {
+        const track = document.getElementById(trackId);
+        const prevBtn = document.getElementById(prevBtnId);
+        const nextBtn = document.getElementById(nextBtnId);
         
-        // 🎯 FUNGSI BARU: Menghitung jarak geser dengan angka cadangan yang pasti untuk desktop
-        function getCertScrollAmount() {
-            const firstCard = certTrack.querySelector('.cert-card-box');
-            if (firstCard && firstCard.clientWidth > 0) {
-                return firstCard.clientWidth + 24; // Lebar kartu + gap 24px
-            }
-            // Jika layar desktop standar 3 kolom, bagi lebar track menjadi 3 bagian
-            return (certTrack.clientWidth / 3); 
+        if (!track || !prevBtn || !nextBtn) return;
+
+        let currentIndex = 0;
+        let autoplayTimer = null;
+        const cards = track.children;
+
+        function getItemsPerPage() {
+            return window.innerWidth <= 768 ? itemsPerPageMobile : itemsPerPageDesktop;
         }
 
-        // 1. TOMBOL PANAH KANAN (DIPAKSA BERGESER)
-        certNext.addEventListener('click', function(e) {
-            e.preventDefault();
-            const scrollAmount = getCertScrollAmount();
+        // Fungsi utama menggeser track menggunakan teknik math transform
+        function moveSlider() {
+            const itemsPerPage = getItemsPerPage();
+            const maxIndex = Math.max(0, cards.length - itemsPerPage);
             
-            // Deteksi manual ujung kanan
-            const isAtEnd = certTrack.scrollLeft + certTrack.clientWidth >= certTrack.scrollWidth - 20;
-            
-            if (isAtEnd) {
-                certTrack.scrollTo({ left: 0, behavior: 'smooth' }); // Loop ke awal
-            } else {
-                certTrack.scrollTo({
-                    left: certTrack.scrollLeft + scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        });
+            // Batasi indeks agar tidak menggeser ke area kosong
+            if (currentIndex > maxIndex) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = maxIndex;
 
-        // 2. TOMBOL PANAH KIRI (DIPAKSA MUNDUR)
-        certPrev.addEventListener('click', function(e) {
-            e.preventDefault();
-            const scrollAmount = getCertScrollAmount();
-            
-            if (certTrack.scrollLeft <= 10) {
-                certTrack.scrollTo({ left: certTrack.scrollWidth, behavior: 'smooth' }); // Loop ke ujung akhir
-            } else {
-                certTrack.scrollTo({
-                    left: certTrack.scrollLeft - scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        });
-
-        // Fungsi Menghentikan Sementara Autoplay
-        function stopCertAutoplay() {
-            if (certAutoplayTimer) {
-                clearInterval(certAutoplayTimer);
+            if (cards.length > 0) {
+                const cardWidth = cards[0].clientWidth;
+                // Hitung koordinat geser: (Lebar kartu + Gap) * indeks aktif
+                const amountToMove = (cardWidth + gapSize) * currentIndex;
+                track.style.transform = `translateX(-${amountToMove}px)`;
             }
         }
 
-        // 2. KONTROL MANUAL TOMBOL PANAH
-        certNext.addEventListener('click', function() {
-            stopCertAutoplay();
-            certTrack.scrollBy({ left: getCertScrollAmount(), behavior: 'smooth' });
-            startCertAutoplay(); // Jalankan ulang timer setelah diklik manual
+        function startAutoplay() {
+            if (autoplayTimer) clearInterval(autoplayTimer);
+            autoplayTimer = setInterval(() => {
+                const itemsPerPage = getItemsPerPage();
+                if (currentIndex >= cards.length - itemsPerPage) {
+                    currentIndex = 0; // Balik ke awal jika sudah di ujung
+                } else {
+                    currentIndex++;
+                }
+                moveSlider();
+            }, 4000); // Bergeser otomatis setiap 4 detik
+        }
+
+        function stopAutoplay() {
+            if (autoplayTimer) clearInterval(autoplayTimer);
+        }
+
+        // Event Tombol Navigasi Manual
+        nextBtn.addEventListener('click', () => {
+            stopAutoplay();
+            const itemsPerPage = getItemsPerPage();
+            if (currentIndex >= cards.length - itemsPerPage) {
+                currentIndex = 0;
+            } else {
+                currentIndex++;
+            }
+            moveSlider();
+            startAutoplay();
         });
 
-        certPrev.addEventListener('click', function() {
-            stopCertAutoplay();
-            certTrack.scrollBy({ left: -getCertScrollAmount(), behavior: 'smooth' });
-            startCertAutoplay();
+        prevBtn.addEventListener('click', () => {
+            stopAutoplay();
+            if (currentIndex <= 0) {
+                const itemsPerPage = getItemsPerPage();
+                currentIndex = Math.max(0, cards.length - itemsPerPage);
+            } else {
+                currentIndex--;
+            }
+            moveSlider();
+            startAutoplay();
         });
 
-        // 3. FITUR HOVER MOUSE: Stop jalan saat kursor menyentuh kartu
-        certTrack.addEventListener('mouseenter', stopCertAutoplay);
-        certTrack.addEventListener('mouseleave', startCertAutoplay);
+        // Fitur Kursor: Berhenti geser saat diarahkan mouse
+        track.addEventListener('mouseenter', stopAutoplay);
+        track.addEventListener('mouseleave', startAutoplay);
 
-        // 4. DETEKSI SWIPE JARI MANUAL (Khusus Layar HP / Touchpad)
-        // Jika user melakukan swipe manual, matikan sementara autoplay agar tidak pusing
-        certTrack.addEventListener('touchstart', stopCertAutoplay, { passive: true });
-        certTrack.addEventListener('touchend', startCertAutoplay, { passive: true });
+        // Pasang sensor resize agar pembagian layout tetap presisi saat browser dilebarkan
+        window.addEventListener('resize', moveSlider);
 
-        // Nyalakan carousel untuk pertama kalinya
-        startCertAutoplay();
+        // Jalankan carousel
+        setTimeout(moveSlider, 100);
+        startAutoplay();
     }
+
+    // ==========================================================================
+    // AKTIFKAN KEDUA CAROUSEL SECARA BERSAMAAN
+    // ==========================================================================
+    
+    // 1. Jalankan untuk Seksi Sertifikat (Tampil 1 di HP, 3 di Desktop, Gap 24px)
+    initTransformCarousel('certSliderTrack', 'certPrevBtn', 'certNextBtn', 1, 3, 24);
+
+    // 2. Jalankan untuk Seksi Featured Projects (Tampil 1 di HP, 2 di Desktop, Gap 30px)
+    initTransformCarousel('projSliderTrack', 'projPrevBtn', 'projNextBtn', 1, 2, 30);
+});
+document.addEventListener("DOMContentLoaded", function() {
+    function initHybridCarousel(trackId, prevBtnId, nextBtnId) {
+        const track = document.getElementById(trackId);
+        const prevBtn = document.getElementById(prevBtnId);
+        const nextBtn = document.getElementById(nextBtnId);
+        
+        // 1. AUTOSCROLL LAMBAT
+        let autoScroll = setInterval(() => {
+            if (track.scrollLeft >= (track.scrollWidth - track.clientWidth)) {
+                track.scrollLeft = 0; // Balik ke awal
+            } else {
+                track.scrollLeft += 1; // Kecepatan lambat (1px per tick)
+            }
+        }, 50); // Kecepatan tick (semakin kecil semakin halus)
+
+        // Berhenti saat mouse di atas
+        track.addEventListener('mouseenter', () => clearInterval(autoScroll));
+        track.addEventListener('mouseleave', () => {
+            autoScroll = setInterval(() => {
+                if (track.scrollLeft >= (track.scrollWidth - track.clientWidth)) {
+                    track.scrollLeft = 0;
+                } else {
+                    track.scrollLeft += 1;
+                }
+            }, 50);
+        });
+
+        // 2. TOMBOL NAVIGASI MANUAL
+        nextBtn.addEventListener('click', () => {
+            track.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+        prevBtn.addEventListener('click', () => {
+            track.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+    }
+
+    // Jalankan untuk keduanya
+    initHybridCarousel('projSliderTrack', 'projPrevBtn', 'projNextBtn');
+    initHybridCarousel('certSliderTrack', 'certPrevBtn', 'certNextBtn');
 });
