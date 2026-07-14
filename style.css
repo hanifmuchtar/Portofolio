@@ -131,6 +131,17 @@ nav {
     animation: fadeUp 0.8s ease-out forwards;
 }
 
+.hello {
+    display: inline-flex;
+    align-items: center;
+    color: #4A82D6;
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: auto;
+    margin-top: 0;
+
+}
+
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -140,8 +151,8 @@ nav {
     font-weight: 600;
     padding: 6px 16px;
     border-radius: 20px;
-    margin-bottom: 10px;
-    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-top: 8px;
     border: 1px solid rgba(44, 94, 173, 0.2);
 }
 
@@ -251,7 +262,7 @@ section {
 
 /* SEKSI HERO UTAMA */
 .hero {
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -354,49 +365,50 @@ section {
     }
 }
 
-/* SEKSI ABOUT GLOBAL */
-.about {
-    padding: 100px 8%;
-    background-color: var(--bg-main); /* Latar belakang cerah lembut #f4f7fa */
-    display: flex;
-    justify-content: center;
+/* Styling Utama Seksi About */
+.about-section {
+    padding: 60px 20px;
+    text-align: center; /* Membuat semua teks & judul otomatis ke tengah */
+    background-color: #ffffff; /* Sesuaikan dengan warna background webmu */
 }
 
-.about-container {
-    max-width: 1000px; /* Lebar maksimal area konten */
-    width: 100%;
-    text-align: center; /* Membuat judul dan teks berada di tengah */
+/* Judul "About Me" */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 40px;
 }
 
-/* BLOK TEXT DESKRIPSI UTAMA */
-.about-description {
-    max-width: 750px;
-    margin: 0 auto 60px auto; /* Membuat blok paragraf berada di tengah dan memberi jarak ke bawah */
+.section-title .highlight {
+    color: #2b66ff; /* Warna biru khas portofoliomu */
 }
 
-.about-description p {
-    font-size: 17.6px;
-    color: var(--text-secondary); /* Warna Slate Gray */
-    line-height: 1.75;
-    margin-bottom: 20px;
+/* Pembungkus Konten Teks */
+.about-content {
+    max-width: 800px; /* Membatasi lebar teks agar nyaman dibaca seperti di gambar */
+    margin: 0 auto 50px auto; /* Centering block dan memberi jarak ke box bawahnya */
+    padding: 0 10px;
 }
 
-.about-description p strong {
-    color: var(--text-primary); /* Navy gelap untuk teks yang ditebalkan */
+/* Paragraf Deskripsi */
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #64748b; /* Warna abu-abu halus profesional */
+    margin-bottom: 24px; /* Jarak antar paragraf */
+    text-align: center; /* Memastikan teks paragraf rata tengah */
+}
+
+/* Memberikan penekanan warna gelap pada teks tebal (strong) */
+.about-text strong {
+    color: #0f172a;
     font-weight: 600;
-}
-
-/* KOTAK-KOTAK GRID KARTU KEAHLIAN */
-.about-skills {
-    display: grid;
-    /* Membuat 3 kolom pada layar laptop, otomatis menjadi 1 kolom jika layar HP sempit */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px; /* Jarak spasi antar kotak (Spacing Scale 24px) */
 }
 
 /* 🎯 DETAIL KOTAK KARTU (Mengikuti Konsep Konten Card Cerah) */
 .skill-box {
-    background-color: #ffffff; /* Kotak berwarna putih murni agar pop-out */
+    background-color: #f4f7fa; /* Kotak berwarna putih murni agar pop-out */
     border: 1px solid var(--border-color);
     border-radius: 16px; /* Sudut membulat modern */
     padding: 40px 30px;
