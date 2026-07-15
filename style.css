@@ -380,10 +380,6 @@ section {
     margin-bottom: 40px;
 }
 
-.section-title .highlight {
-    color: #2b66ff; /* Warna biru khas portofoliomu */
-}
-
 /* Pembungkus Konten Teks */
 .about-content {
     max-width: 800px; /* Membatasi lebar teks agar nyaman dibaca seperti di gambar */
@@ -408,10 +404,11 @@ section {
 
 /* 🎯 DETAIL KOTAK KARTU (Mengikuti Konsep Konten Card Cerah) */
 .skill-box {
-    background-color: #f4f7fa; /* Kotak berwarna putih murni agar pop-out */
+    background-color: var(--bg-card); /* Kotak berwarna putih murni agar pop-out */
     border: 1px solid var(--border-color);
     border-radius: 16px; /* Sudut membulat modern */
     padding: 40px 30px;
+    margin-bottom: 5px;
     display: flex;
     flex-direction: column;
     align-items: center; /* Seluruh isi kartu diletakkan di tengah */
@@ -510,7 +507,7 @@ section {
 /* 🎯 TEMPELKAN KODE BARU DI SINI (Paling Bawah) */
 .about-section {
     padding: 80px 7%;
-    background-color: #ffffff;
+    background-color: var(--bg-main);
     text-align: center; 
 }
 
@@ -1653,6 +1650,13 @@ nav, .headerbar {
 
 @media (max-width: 600px) {
     /* Layar HP Mobile: Menjadi 1 Kolom memanjang ke bawah */
+    .projects-slider-container {
+        flex-direction: column !important;
+        padding: 0 5px !important; /* Memberi jarak aman di kanan-kiri layar HP */
+    }
+
+@media (max-width: 600px) {
+    /* Layar HP Mobile: Menjadi 1 Kolom memanjang ke bawah */
     .projects-grid {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
@@ -1668,3 +1672,4 @@ nav, .headerbar {
         padding-top: 120px;
         padding-bottom: 20px !important; /* Menggeser area profil turun ke bawah agar tidak terpentok header */
     }
+}
