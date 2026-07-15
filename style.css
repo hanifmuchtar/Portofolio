@@ -403,6 +403,72 @@ section {
     color: #0f172a;
     font-weight: 600;
 }
+.about-image {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-img-container {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 8px solid #ffffff;
+    overflow: hidden;
+    box-shadow: rgba(44, 94, 173, 0.15) 0px 20px 40px 0px;
+    margin-bottom: 0px;
+}
+.profile-place {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.info-loc a {
+    background-color: rgb(255, 255, 255);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(15, 23, 42);
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0%;
+    padding: 10px 16px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(226, 232, 240);
+    border-radius: 30px;
+    gap: 8px;
+    text-decoration: none;
+    overflow: hidden;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    
+    /* 🎯 POSISI AWAL INSET: Ketebalan 0 di bagian bawah tombol */
+    box-shadow: inset 0 0 0 0 var(--hover-color), rgba(0, 0, 0, 0.02) 0px 2px 4px 0px;
+    
+    /* Efek transisi halus saat transisi shadow dan warna teks */
+    transition: color 0.3s, box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s, transform 0.2s;
+}
+
+.btn-info {
+/* Menentukan warna sapuan biru safir */
+    --hover-color: #2C5EAD;
+    
+}
+
+.btn-info:hover  {
+
+color: #ffffff; /* Teks berubah menjadi putih saat tertutup shadow biru */
+    border-color: #2C5EAD;
+    transform: translateY(-2px);
+    /* 🎯 EFEK SAPUAN MASUK: Mengisi setinggi 50px (penuh) dari arah bawah */
+    box-shadow: inset 0 -50px 0 0 var(--hover-color), rgba(44, 94, 173, 0.2) 0px 6px 16px;
+}
 
 /* 🎯 DETAIL KOTAK KARTU (Mengikuti Konsep Konten Card Cerah) */
 .skills-container {
