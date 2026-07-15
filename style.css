@@ -960,14 +960,14 @@ section {
 
 /* Tombol laen */
 .other-link a {
-    background-color: rgb(255, 255, 255);
+    background-color:#2C5EAD;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
     font-size: 14px;
     font-weight: 600;
-    color: rgb(15, 23, 42);
+    color: rgb(255, 255, 255);
     position: relative;
     z-index: 1;
     flex: 1 1 0%;
@@ -989,7 +989,7 @@ section {
 
 .btn-other {
 /* Menentukan warna sapuan biru safir */
-    --hover-color: #2C5EAD;
+    --hover-color: #ffffff;
     
 }
 
@@ -1004,7 +1004,7 @@ color: #ffffff; /* Teks berubah menjadi putih saat tertutup shadow biru */
 
 
 .btn-other:hover {
-    color: #ffffff; /* Teks berubah menjadi putih saat tertutup shadow biru */
+    color: #000000; /* Teks berubah menjadi putih saat tertutup shadow biru */
     border-color: #2C5EAD;
     transform: translateY(-2px);
     /* 🎯 EFEK SAPUAN MASUK: Mengisi setinggi 50px (penuh) dari arah bawah */
@@ -1239,7 +1239,7 @@ color: #ffffff; /* Teks berubah menjadi putih saat tertutup shadow biru */
     background-position: left bottom;
     
     /* Haluskan semua transisi gerak */
-    transition: background-position 0.4s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background-position 0.5s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .contact-btn i {
@@ -1737,7 +1737,7 @@ nav, .headerbar {
     
     /* 🎯 TAMBAHKAN KODE INI UNTUK MEMBERI JARAK FOTO PROFIL DENGAN HEADER */
     .hero { 
-        padding-top: 80px;
+        padding-top: 60px;
         padding-bottom: 20px !important; /* Menggeser area profil turun ke bawah agar tidak terpentok header */
     }
 }
